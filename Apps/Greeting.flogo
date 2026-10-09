@@ -55,13 +55,13 @@
             },
             "output": {
               "code": "=$.code",
-              "message": "=$.message"
+              "responseBody": "=$.responseBody"
             }
           },
           "reply": {
             "code": 200,
             "configureResponseCodes": false,
-            "message": {}
+            "responseBody": {}
           },
           "schemas": {
             "reply": {
@@ -131,7 +131,17 @@
                 "flowInfo": false,
                 "message": "=string.concat(\"Received: \",$flow.pathParams.Name)",
                 "logLevel": ""
-              }
+              },
+              "schemas": {
+                "input": {
+                  "dynamicLogFields": {
+                    "type": "json",
+                    "value": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"fields\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"value\":{\"type\":\"string\"}},\"required\":[\"name\",\"value\"]}}}}",
+                    "fe_metadata": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"fields\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"value\":{\"type\":\"string\"}},\"required\":[\"name\",\"value\"]}}}}"
+                  }
+                }
+              },
+              "feSchemaMap": {}
             }
           },
           {
@@ -143,7 +153,14 @@
               "settings": {
                 "mappings": {
                   "code": 200,
-                  "message": "=string.concat(\"Hello \",$flow.pathParams.Name)"
+                  "responseBody": {
+                    "mapping": {
+                      "body": "=string.concat(\"<!DOCTYPE html><html><head><meta charset='UTF-8'><link rel='icon' href='data:,'><title>Flogo Status</title><style>body{font-family:Segoe UI,Arial,sans-serif;background:#f4f6f9;display:flex;justify-content:center;padding-top:60px;margin:0}.card{background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.12);padding:28px 36px;min-width:360px}h1{margin:0 0 18px;font-size:22px;color:#1a3d6d}table{border-collapse:collapse;width:100%}td{padding:8px 4px;border-bottom:1px solid #eee;font-size:15px}td.k{color:#666;width:40%}td.v{font-weight:600;color:#222}</style></head><body><div class='card'><h1>Hello \", string.replaceAll(string.replaceAll(string.replaceAll($flow.pathParams.Name, \"<\", \"\"), \">\", \"\"), \"&\", \"\"), string.concat(\"</h1><table><tr><td class='k'>Host</td><td class='v'>\", $env[HOSTNAME], string.concat(\"</td></tr><tr><td class='k'>Flogo Version</td><td class='v'>\", $property[\"FlogoVersion\"], string.concat(\"</td></tr><tr><td class='k'>App Version</td><td class='v'>\", $flowctx[\"AppVersion\"], \"</td></tr></table></div></body></html>\"))))",
+                      "headers": {
+                        "Content-Type": "text/html"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -183,22 +200,32 @@
               "type": "integer"
             },
             {
-              "name": "message",
-              "type": "string"
+              "name": "responseBody",
+              "type": "object",
+              "schema": {
+                "type": "json",
+                "value": "{\"body\":{\"type\":\"any\"},\"headers\":{\"type\":\"object\"}}"
+              }
             }
           ],
           "fe_metadata": {
             "input": "{\"type\":\"object\",\"title\":\"ReceiveHTTPMessage\",\"properties\":{\"pathParams\":{\"type\":\"object\",\"properties\":{\"Name\":{\"type\":\"string\"}},\"required\":[]},\"headers\":{\"type\":\"object\",\"properties\":{\"Accept\":{\"type\":\"string\",\"visible\":false},\"Accept-Charset\":{\"type\":\"string\",\"visible\":false},\"Accept-Encoding\":{\"type\":\"string\",\"visible\":false},\"Authorization\":{\"type\":\"string\",\"visible\":false},\"Connection\":{\"type\":\"string\",\"visible\":false},\"Content-Length\":{\"type\":\"string\",\"visible\":false},\"Content-Type\":{\"type\":\"string\",\"visible\":false},\"Cookie\":{\"type\":\"string\",\"visible\":false},\"Pragma\":{\"type\":\"string\",\"visible\":false}},\"required\":[]},\"requestURI\":{\"type\":\"string\",\"required\":false},\"method\":{\"type\":\"string\",\"required\":false}}}",
-            "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"code\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[]}"
+            "output": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"code\":{\"type\":\"integer\"},\"responseBody\":{\"type\":\"object\",\"properties\":{\"body\":{\"type\":\"any\"},\"headers\":{\"type\":\"object\"}}}}}"
           }
         },
         "explicitReply": true
       }
     }
   ],
-  "properties": [],
+  "properties": [
+    {
+      "name": "FlogoVersion",
+      "type": "string",
+      "value": "2.26.8"
+    }
+  ],
   "connections": {},
-  "contrib": "W3sicmVmIjoiZ2l0aHViLmNvbS90aWJjby9mbG9nby1nZW5lcmFsL3NyYy9hcHAvR2VuZXJhbCIsImlkIjoiR2VuZXJhbCIsInZlcnNpb24iOiIxLjYuMTMiLCJ0YWciOiIxLjYuMTMtYjAzIiwibmFtZSI6IkdlbmVyYWwiLCJzM2xvY2F0aW9uIjoiVGliY28vR2VuZXJhbCIsImlzVXNlckV4dGVuc2lvbiI6ZmFsc2V9XQ==",
+  "contrib": "W3sicmVmIjoiZ2l0aHViLmNvbS90aWJjby9mbG9nby1nZW5lcmFsL3NyYy9hcHAvR2VuZXJhbCIsImlkIjoiR2VuZXJhbCIsInZlcnNpb24iOiIxLjYuMTUiLCJ0YWciOiIxLjYuMTUtYjA0IiwibmFtZSI6IlRJQkNPIEZsb2dvIENvbm5lY3RvciBmb3IgR2VuZXJhbCIsInMzbG9jYXRpb24iOiJUaWJjby9HZW5lcmFsIiwiaXNVc2VyRXh0ZW5zaW9uIjpmYWxzZX1d",
   "metadata": {
     "endpoints": [
       {
@@ -252,6 +279,6 @@
         }
       }
     ],
-    "flogoVersion": "2.26.3"
+    "flogoVersion": "2.26.8"
   }
 }
