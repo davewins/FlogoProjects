@@ -7,7 +7,7 @@
     "github.com/tibco/flogo-general/src/app/General/trigger/rest",
     "github.com/project-flogo/contrib/function/string"
   ],
-  "name": "Greeting",
+  "name": "flogo-greeting",
   "description": "",
   "version": "1.0.0",
   "type": "flogo:app",
@@ -61,7 +61,7 @@
           "reply": {
             "code": 200,
             "configureResponseCodes": false,
-            "responseBody": {}
+            "message": ""
           },
           "schemas": {
             "reply": {
@@ -221,7 +221,7 @@
     {
       "name": "FlogoVersion",
       "type": "string",
-      "value": "2.26.8"
+      "value": "2.26.7"
     }
   ],
   "connections": {},
@@ -279,6 +279,6 @@
         }
       }
     ],
-    "flogoVersion": "2.26.8"
+    "flogoVersion": "2.26.7"
   }
 }
